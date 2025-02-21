@@ -111,5 +111,44 @@ namespace L01_2020CM606_2023LG651.Controllers
                             .ToList();
             return Ok(topUsuarios);
         }
+
+        /// <summary>
+        /// Endpoint que filtra usuarios por nombre y apellido
+        /// </summary>
+        /// <param name="filtro">Texto a buscar en nombre o apellido</param>
+        [HttpGet]
+        [Route("FindByNombreApellido/{filtro}")]
+        public IActionResult FindByNombreApellido(string filtro)
+        {
+            var usuarios = (from u in _contexto.Usuarios
+                            where u.nombre.Contains(filtro) ||
+                                  u.apellido.Contains(filtro)
+                            select u).ToList();
+
+            if (!usuarios.Any())
+            {
+                return NotFound($"No se encontraron usuarios que contengan '{filtro}' en su nombre o apellido");
+            }
+            return Ok(usuarios);
+        }
+
+        /// <summary>
+        /// Endpoint que filtra usuarios por rol
+        /// </summary>
+        /// <param name="rolId">ID del rol a filtrar</param>
+        [HttpGet]
+        [Route("FindByRol/{rolId}")]
+        public IActionResult FindByRol(int rolId)
+        {
+            var usuarios = (from u in _contexto.Usuarios
+                            where u.rolId == rolId
+                            select u).ToList();
+
+            if (!usuarios.Any())
+            {
+                return NotFound($"No se encontraron usuarios con el rol ID: {rolId}");
+            }
+            return Ok(usuarios);
+        }
     }
 }

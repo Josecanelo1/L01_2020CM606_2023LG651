@@ -24,7 +24,7 @@ namespace L01_2020CM606_2023LG651.Controllers
         public IActionResult Get()
         {
             var comentarios = (from c in _contexto.Comentarios
-                            select c).ToList();
+                               select c).ToList();
             return Ok(comentarios);
         }
 
@@ -36,8 +36,8 @@ namespace L01_2020CM606_2023LG651.Controllers
         public IActionResult GetComentarioById(int id)
         {
             var comentario = (from c in _contexto.Comentarios
-                            where c.cometarioId == id
-                            select c).FirstOrDefault();
+                              where c.cometarioId == id
+                              select c).FirstOrDefault();
             if (comentario == null) return NotFound();
             return Ok(comentario);
         }
@@ -74,13 +74,33 @@ namespace L01_2020CM606_2023LG651.Controllers
         public IActionResult DeleteComentario(int id)
         {
             var comentario = (from c in _contexto.Comentarios
-                            where c.cometarioId == id
-                            select c).FirstOrDefault();
+                              where c.cometarioId == id
+                              select c).FirstOrDefault();
             if (comentario == null) return NotFound();
 
             _contexto.Comentarios.Remove(comentario);
             _contexto.SaveChanges();
             return Ok("Comentario eliminado exitosamente");
+        }
+
+        /// <summary>
+        /// Endpoint que retorna los comentarios de un usuario específico
+        /// </summary>
+        /// <param name="usuarioId">ID del usuario a filtrar</param>
+        [HttpGet]
+        [Route("GetComentariosByUsuario/{usuarioId}")]
+        public IActionResult GetComentariosByUsuario(int usuarioId)
+        {
+            var comentarios = (from c in _contexto.Comentarios
+                               where c.usuarioId == usuarioId
+                               select c).ToList();
+
+            if (!comentarios.Any())
+            {
+                return NotFound($"No se encontraron comentarios para el usuario ID: {usuarioId}");
+            }
+
+            return Ok(comentarios);
         }
     }
 }

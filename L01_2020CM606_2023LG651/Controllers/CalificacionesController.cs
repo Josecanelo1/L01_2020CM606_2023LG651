@@ -24,7 +24,7 @@ namespace L01_2020CM606_2023LG651.Controllers
         public IActionResult Get()
         {
             var calificaciones = (from c in _contexto.Calificaciones
-                                select c).ToList();
+                                  select c).ToList();
             return Ok(calificaciones);
         }
 
@@ -36,8 +36,8 @@ namespace L01_2020CM606_2023LG651.Controllers
         public IActionResult GetCalificacionById(int id)
         {
             var calificacion = (from c in _contexto.Calificaciones
-                            where c.calificacionId == id
-                            select c).FirstOrDefault();
+                                where c.calificacionId == id
+                                select c).FirstOrDefault();
             if (calificacion == null) return NotFound();
             return Ok(calificacion);
         }
@@ -74,13 +74,33 @@ namespace L01_2020CM606_2023LG651.Controllers
         public IActionResult DeleteCalificacion(int id)
         {
             var calificacion = (from c in _contexto.Calificaciones
-                            where c.calificacionId == id
-                            select c).FirstOrDefault();
+                                where c.calificacionId == id
+                                select c).FirstOrDefault();
             if (calificacion == null) return NotFound();
 
             _contexto.Calificaciones.Remove(calificacion);
             _contexto.SaveChanges();
             return Ok("Calificación eliminada exitosamente");
+        }
+
+        /// <summary>
+        /// Endpoint que retorna las calificaciones de una publicación específica
+        /// </summary>
+        /// <param name="publicacionId">ID de la publicación a filtrar</param>
+        [HttpGet]
+        [Route("GetCalificacionesByPublicacion/{publicacionId}")]
+        public IActionResult GetCalificacionesByPublicacion(int publicacionId)
+        {
+            var calificaciones = (from c in _contexto.Calificaciones
+                                  where c.publicacionId == publicacionId
+                                  select c).ToList();
+
+            if (!calificaciones.Any())
+            {
+                return NotFound($"No se encontraron calificaciones para la publicación ID: {publicacionId}");
+            }
+
+            return Ok(calificaciones);
         }
     }
 }
