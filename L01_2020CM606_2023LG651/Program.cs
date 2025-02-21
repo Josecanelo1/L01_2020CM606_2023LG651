@@ -1,3 +1,4 @@
+using L01_2020CM606_2023LG651.Models;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -9,8 +10,8 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-// Inyección por dependencia del string de conexión al contexto
-builder.Services.AddDbContext<AplicattionDbContext>(options => options.UseSqlServer(
+// Inyecciï¿½n por dependencia del string de conexiï¿½n al contexto
+builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(
     builder.Configuration.GetConnectionString("EquiposDbConnection")
 ));
 
