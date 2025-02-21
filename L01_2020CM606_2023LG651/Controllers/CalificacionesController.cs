@@ -49,16 +49,9 @@ namespace L01_2020CM606_2023LG651.Controllers
         [Route("CreateCalificacion")]
         public IActionResult CreateCalificacion([FromBody] Calificaciones calificacion)
         {
-            try
-            {
-                _contexto.Calificaciones.Add(calificacion);
-                _contexto.SaveChanges();
-                return Ok("Calificación creada exitosamente");
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
+            _contexto.Calificaciones.Add(calificacion);
+            _contexto.SaveChanges();
+            return Ok("Calificación creada exitosamente");
         }
 
         /// <summary>
@@ -68,16 +61,9 @@ namespace L01_2020CM606_2023LG651.Controllers
         [Route("UpdateCalificacion")]
         public IActionResult UpdateCalificacion([FromBody] Calificaciones calificacion)
         {
-            try
-            {
-                _contexto.Calificaciones.Update(calificacion);
-                _contexto.SaveChanges();
-                return Ok("Calificación actualizada exitosamente");
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
+            _contexto.Calificaciones.Update(calificacion);
+            _contexto.SaveChanges();
+            return Ok("Calificación actualizada exitosamente");
         }
 
         /// <summary>
@@ -92,16 +78,9 @@ namespace L01_2020CM606_2023LG651.Controllers
                             select c).FirstOrDefault();
             if (calificacion == null) return NotFound();
 
-            try
-            {
-                _contexto.Calificaciones.Remove(calificacion);
-                _contexto.SaveChanges();
-                return Ok("Calificación eliminada exitosamente");
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
+            _contexto.Calificaciones.Remove(calificacion);
+            _contexto.SaveChanges();
+            return Ok("Calificación eliminada exitosamente");
         }
     }
 }
