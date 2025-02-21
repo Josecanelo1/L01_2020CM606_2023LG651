@@ -37,8 +37,8 @@ namespace L01_2020CM606_2023LG651.Controllers
         public IActionResult GetUsuarioById(int id)
         {
             var usuario = (from u in _contexto.Usuarios
-                        where u.usuarioId == id
-                        select u).FirstOrDefault();
+                           where u.usuarioId == id
+                           select u).FirstOrDefault();
             if (usuario == null) return NotFound();
             return Ok(usuario);
         }
@@ -50,16 +50,10 @@ namespace L01_2020CM606_2023LG651.Controllers
         [Route("CreateUsuario")]
         public IActionResult CreateUsuario([FromBody] Usuarios usuario)
         {
-            try
-            {
-                _contexto.Usuarios.Add(usuario);
-                _contexto.SaveChanges();
-                return Ok("Usuario creado exitosamente");
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
+
+            _contexto.Usuarios.Add(usuario);
+            _contexto.SaveChanges();
+            return Ok("Usuario creado exitosamente");
         }
 
         /// <summary>
@@ -69,16 +63,10 @@ namespace L01_2020CM606_2023LG651.Controllers
         [Route("UpdateUsuario")]
         public IActionResult UpdateUsuario([FromBody] Usuarios usuario)
         {
-            try
-            {
-                _contexto.Usuarios.Update(usuario);
-                _contexto.SaveChanges();
-                return Ok("Usuario actualizado exitosamente");
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
+
+            _contexto.Usuarios.Update(usuario);
+            _contexto.SaveChanges();
+            return Ok("Usuario actualizado exitosamente");
         }
 
         /// <summary>
@@ -89,20 +77,39 @@ namespace L01_2020CM606_2023LG651.Controllers
         public IActionResult DeleteUsuario(int id)
         {
             var usuario = (from u in _contexto.Usuarios
-                        where u.usuarioId == id
-                        select u).FirstOrDefault();
+                           where u.usuarioId == id
+                           select u).FirstOrDefault();
             if (usuario == null) return NotFound();
 
-            try
+            _contexto.Usuarios.Remove(usuario);
+            _contexto.SaveChanges();
+            return Ok("Usuario eliminado exitosamente");
+
+        }
+
+        /// <summary>
+        /// Endpoint que retorna el TOP N de usuarios con más comentarios
+        /// </summary>
+        /// <param name="topN">Cantidad de usuarios a mostrar</param>
+        [HttpGet]
+        [Route("GetTopNUsuariosByComentarios/{topN}")]
+        public IActionResult GetTopNUsuariosByComentarios(int topN)
+        {
+            if (topN <= 0)
             {
-                _contexto.Usuarios.Remove(usuario);
-                _contexto.SaveChanges();
-                return Ok("Usuario eliminado exitosamente");
+                return BadRequest("El número debe ser mayor a 0");
             }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
+
+            var topUsuarios = (from c in _contexto.Comentarios
+                               group c by c.usuarioId into g
+                               select new
+                               {
+                                   UsuarioId = g.Key,
+                                   TotalComentarios = g.Count()
+                               })
+                            .Take(topN)
+                            .ToList();
+            return Ok(topUsuarios);
         }
     }
 }
