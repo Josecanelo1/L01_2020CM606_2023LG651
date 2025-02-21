@@ -12,7 +12,7 @@ builder.Services.AddSwaggerGen();
 
 // Inyecci�n por dependencia del string de conexi�n al contexto
 builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(
-    builder.Configuration.GetConnectionString("EquiposDbConnection")
+    builder.Configuration.GetConnectionString("DefaultConnection")
 ));
 
 var app = builder.Build();

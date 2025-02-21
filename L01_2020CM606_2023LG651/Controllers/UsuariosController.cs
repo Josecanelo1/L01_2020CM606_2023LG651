@@ -1,3 +1,4 @@
+using L01_2020CM606_2023LG651.Models;
 using L01_2020CM606_2023LG651.Models.Tablas;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -24,7 +25,7 @@ namespace L01_2020CM606_2023LG651.Controllers
         public IActionResult Get()
         {
             var usuarios = (from u in _contexto.Usuarios
-                          select u).ToList();
+                            select u).ToList();
             return Ok(usuarios);
         }
 
@@ -36,8 +37,8 @@ namespace L01_2020CM606_2023LG651.Controllers
         public IActionResult GetUsuarioById(int id)
         {
             var usuario = (from u in _contexto.Usuarios
-                          where u.usuarioId == id
-                          select u).FirstOrDefault();
+                        where u.usuarioId == id
+                        select u).FirstOrDefault();
             if (usuario == null) return NotFound();
             return Ok(usuario);
         }
@@ -88,8 +89,8 @@ namespace L01_2020CM606_2023LG651.Controllers
         public IActionResult DeleteUsuario(int id)
         {
             var usuario = (from u in _contexto.Usuarios
-                          where u.usuarioId == id
-                          select u).FirstOrDefault();
+                        where u.usuarioId == id
+                        select u).FirstOrDefault();
             if (usuario == null) return NotFound();
 
             try
