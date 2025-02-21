@@ -49,16 +49,9 @@ namespace L01_2020CM606_2023LG651.Controllers
         [Route("CreateComentario")]
         public IActionResult CreateComentario([FromBody] Comentarios comentario)
         {
-            try
-            {
-                _contexto.Comentarios.Add(comentario);
-                _contexto.SaveChanges();
-                return Ok("Comentario creado exitosamente");
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
+            _contexto.Comentarios.Add(comentario);
+            _contexto.SaveChanges();
+            return Ok("Comentario creado exitosamente");
         }
 
         /// <summary>
@@ -68,16 +61,9 @@ namespace L01_2020CM606_2023LG651.Controllers
         [Route("UpdateComentario")]
         public IActionResult UpdateComentario([FromBody] Comentarios comentario)
         {
-            try
-            {
-                _contexto.Comentarios.Update(comentario);
-                _contexto.SaveChanges();
-                return Ok("Comentario actualizado exitosamente");
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
+            _contexto.Comentarios.Update(comentario);
+            _contexto.SaveChanges();
+            return Ok("Comentario actualizado exitosamente");
         }
 
         /// <summary>
@@ -92,16 +78,9 @@ namespace L01_2020CM606_2023LG651.Controllers
                             select c).FirstOrDefault();
             if (comentario == null) return NotFound();
 
-            try
-            {
-                _contexto.Comentarios.Remove(comentario);
-                _contexto.SaveChanges();
-                return Ok("Comentario eliminado exitosamente");
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
+            _contexto.Comentarios.Remove(comentario);
+            _contexto.SaveChanges();
+            return Ok("Comentario eliminado exitosamente");
         }
     }
 }
